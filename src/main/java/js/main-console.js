@@ -1,9 +1,14 @@
+/**
+ * author : Gihan Karunarathne
+ * email : gckarunarathne@gmail.com
+ * [main_console description]
+ */
 function main_console() {
   var TAG = 'Main Console: ';
   var ws;
   var hostAddress;
   var body;
-  var cmds = ['newtab', 'close', 'exit'];
+  var cmds = ['new_window', 'close_window', 'exit'];
 
   this.init = function(url) {
     hostAddress = url;
@@ -38,16 +43,16 @@ function main_console() {
 
   this.commandFactory = function(type, command) {
     switch (type) {
-      case 'newtab':
+      case cmds[0]:
         var str = command.split(' ');
         return {
-          command: str[0],
+          command: type,
           url: str[1]
         };
         break;
-      case 'close':
+      case cmds[1]:
         return {
-          command: str[0]
+          command: type
         };
         break;
       default:

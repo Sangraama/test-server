@@ -1,12 +1,22 @@
+/**
+ * author : Gihan Karunarathne
+ * email : gckarunarathne@gmail.com
+ * [client_console description]
+ */
 function client_console() {
+  var TAG = 'Client Console: ';
   var ws;
   var hostAddress;
   var execute;
   var newWindow;
+  var cmds = ['new_window', 'close_window', 'exit'];
+  var textarea;
 
-  this.init = function(url) {
+  this.init = function(url,textarea) {
     hostAddress = url;
     console.log('Client output init with hostAddress:' + hostAddress);
+    textarea = textarea;
+
     /*var body = document.getElementsByTagName('body')[0];
     execute = document.createElement('div');
     execute.setAttribute('id', 'execute');
@@ -48,26 +58,26 @@ function client_console() {
     }
     ws.onmessage = function(event) {
       var data = JSON.parse(event.data);
-      console.log('Received : ');
-      console.log(data);
+      $('#'+textarea).val($('#'+textarea).val() + '\n' + data.command);
 
-      /*switch(data.command){
-        case 'open_window':
-          openNewWindow(data.url);
-        break;
+      switch (data.command) {
+        case cmds[0]:
+          newWindow = window.open(data.url);
+          break;
 
-        case 'close_window':
-          closeWindow();
-        break;
+        case cmds[1]:
+          newWindow.close();
+          break;
 
-        case 'exit':
-          exit();
-        break;
+        case cmds[2]:
+          ws.close();
+          window.close();
+          break;
 
         default:
           console.log('ERROR : Not supported command ' + data.command);
-        break;
-      }*/
+          break;
+      }
 
     }
     ws.onclose = function() {
@@ -84,21 +94,4 @@ function client_console() {
     return newElement;
   }
 
-  /**
-   * http://www.w3schools.com/jsref/met_win_open.asp
-   * @param  {[type]} url [description]
-   * @return {[type]}     [description]
-   */
-  this.openNewWindow = function(url) {
-    newWindow = window.open(url);
-  }
-
-  this.closeWindow = function() {
-    newWindow.close();
-  }
-
-  this.exit = function() {
-    ws.close();
-    window.close();
-  }
 }

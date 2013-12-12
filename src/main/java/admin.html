@@ -28,7 +28,13 @@
 <body>
 <div class="container-fluid well">
 <h4>Admin Panel</h4>
-<input id='terminal' type="text" placeholder="Command [options]">
+<div class="row-fluid">
+<input id='terminal' class="span10" type="text" placeholder="Command [options]">
+  <p>
+  <button id="clear_btn" class="btn btn-primary" type="button">Clear</button>
+</p>
+
+</div>
 </div>
 
 <script type="text/javascript">
@@ -48,10 +54,12 @@
   });
 
   $('#terminal').keypress(function(e) {
-    console.log( "Handler for .keypress() called." + $('#terminal').val());
     if(e.which == 13) {
        adminConsole.sendCommand($('#terminal').val());
     }
+  });
+  $('#clear_btn').click(function(){
+    $('#terminal').val('');
   });
 </script>
 </body>
