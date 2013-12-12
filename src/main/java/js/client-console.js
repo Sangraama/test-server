@@ -1,19 +1,31 @@
 function client_console() {
   var ws;
-  var hostURL = '';
+  var hostAddress;
   var execute;
   var newWindow;
 
   this.init = function(url) {
-    hostURL = url;
-    var body = document.getElementsByTagName('body')[0];
+    hostAddress = url;
+    console.log('Client output init with hostAddress:' + hostAddress);
+    /*var body = document.getElementsByTagName('body')[0];
     execute = document.createElement('div');
     execute.setAttribute('id', 'execute');
-    body.appendChild(execute);
+    body.appendChild(execute);*/
+  }
+
+  this.sendCommand = function(command) {
+
+    if (ws.readyState == ws.OPEN) {
+      console.log(command);
+      ws.send(JSON.stringify(command));
+    } else {
+      console.log(" isn't ready or open to send data " + hostAddress);
+    }
+
   }
 
   this.connect = function() {
-    console.log(TAG + 'Connecting ... ' + hostURL);
+    console.log('Connecting ... ' + hostAddress);
     var hostProtocol = 'ws://';
 
     /*if (window.location.protocol == 'http:')
@@ -21,7 +33,7 @@ function client_console() {
     else
       hostProtocol = 'wss://';*/
 
-    var hostURL = hostProtocol + hostURL;
+    var hostURL = hostProtocol + hostAddress;
     /* Open a websocket which will depend on browser */
     if ('MozWebSocket' in window) {
       ws = new MozWebSocket(hostURL);
@@ -32,12 +44,14 @@ function client_console() {
     }
 
     ws.onopen = function() {
-      console.log('Connection established between ' + hostURL);
+      console.log('Connection established between ' + hostAddress);
     }
     ws.onmessage = function(event) {
       var data = JSON.parse(event.data);
+      console.log('Received : ');
+      console.log(data);
 
-      switch(data.command){
+      /*switch(data.command){
         case 'open_window':
           openNewWindow(data.url);
         break;
@@ -53,7 +67,8 @@ function client_console() {
         default:
           console.log('ERROR : Not supported command ' + data.command);
         break;
-      }
+      }*/
+
     }
     ws.onclose = function() {
 

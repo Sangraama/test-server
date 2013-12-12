@@ -8,23 +8,51 @@
 <meta name="author" content="Gihan Karunarathne">
 <meta name="email" content="gckarunarathne@gmail.com">
 
+<!-- Add style sheets and responsive design -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="bootstrap-responsive.min.css" rel="stylesheet">
+
 <!-- Add java script libraries -->
 <script type="text/javascript" src="jquery-2.0.2.min.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
 <script type="text/javascript" src="jquery.json-2.4.min.js"></script>
 <script type="text/javascript" src="underscore.js"></script>
 
 <script type="text/javascript" src="client-console.js"></script>
+<script type="text/javascript">
+  
+</script>
 </head>
-<body>
-<h4>Client Console</h4>
-<script>
-    var clientConsole;
 
+<body>
+<div class="container-fluid well">
+<h4>Client Console</h4>
+<input id='client_terminal' type="text" placeholder="Command [options]">
+</div>
+
+<script type="text/javascript">
+  var client;
+
+  $(document).ready(function(){
     window.onload = function(){
-        clientConsole = new client_console();
-        clientConsole.init('localhost:8080/console')
-        clientConsole.connect();
+      client = new client_console();
+      client.init('localhost:8080/console');
+      client.connect();
+
+      $('#client_terminal').typeahead({
+        name : 'Command options'
+        //source : client.getCmds()
+      });
     }
+  });
+
+  $('#client_terminal').keypress(function(e) {
+    console.log( "Handler for .keypress() called." + $('#client_terminal').val());
+    if(e.which == 13) {
+       client.sendCommand($('#client_terminal').val());
+    }
+  });
 </script>
 </body>
 </html>

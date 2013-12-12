@@ -28,8 +28,8 @@ function main_console() {
       return;
     } else {
       if (ws.readyState == ws.OPEN) {
-        console.log(commandFactory(type, command));
-        // ws.send(JSON.stringify(commandFactory(type, command)));
+        console.log(this.commandFactory(type, command));
+        ws.send(JSON.stringify(this.commandFactory(type, command)));
       } else {
         console.log(TAG + " isn't ready or open to send data " + hostAddress);
       }
@@ -79,8 +79,11 @@ function main_console() {
     ws.onopen = function() {
       console.log('Connection established between ' + hostURL);
     }
-    ws.onmessage = function() {
+    ws.onmessage = function(event) {
+      var data = JSON.parse(event.data);
 
+      console.log('Received : ');
+      console.log(data);
     }
     ws.onclose = function() {
 

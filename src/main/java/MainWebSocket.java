@@ -20,26 +20,27 @@ public class MainWebSocket extends Verticle {
     public void start() {
         HttpServer server = vertx.createHttpServer();
 
-        ServerWebSocket admin , console;
-
         server.websocketHandler(new Handler<ServerWebSocket>() {
+            ServerWebSocket admin , console;
             public void handle(final ServerWebSocket ws) {
                 if (ws.path().equals("/console")) {
 
-                    ws.dataHandler(new Handler<Buffer>() {
+                    console = ws;
+                    console.dataHandler(new Handler<Buffer>() {
                         public void handle(Buffer data) {
-                            ws.writeTextFrame(data.toString()); // Echo it back
+                            admin.writeTextFrame(data.toString());
                         }
                     });
 
                 } else if (ws.path().equals("/admin-console")) {
 
-                    ws.dataHandler(new Handler<Buffer>() {
+                    admin = ws;
+                    admin.dataHandler(new Handler<Buffer>() {
                         public void handle(Buffer data) {
-                            ws.writeTextFrame(data.toString()); // Echo it back
+                            console.writeTextFrame(data.toString());
                         }
                     });
-                    
+
                 } else {
                     ws.reject();
                 }

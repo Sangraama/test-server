@@ -21,6 +21,17 @@
 
 <script type="text/javascript" src="main-console.js"></script>
 <script type="text/javascript">
+  
+</script>
+</head>
+
+<body>
+<div class="container-fluid well">
+<h4>Admin Panel</h4>
+<input id='terminal' type="text" placeholder="Command [options]">
+</div>
+
+<script type="text/javascript">
   var adminConsole;
 
   $(document).ready(function(){
@@ -35,13 +46,13 @@
       });
     }
   });
-</script>
-</head>
 
-<body>
-<div class="container-fluid well">
-<h4>Admin Panel</h4>
-<input id='terminal' type="text" placeholder="Command [options]">
-</div>
+  $('#terminal').keypress(function(e) {
+    console.log( "Handler for .keypress() called." + $('#terminal').val());
+    if(e.which == 13) {
+       adminConsole.sendCommand($('#terminal').val());
+    }
+  });
+</script>
 </body>
 </html>
