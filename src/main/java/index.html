@@ -1,40 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><title>Web Socket Test</title></head>
-<script type="text/javascript" src="/main-console.js"></script>
-<body>
-<p>Hello World....</p>
-<script>
-    var socket;
-    if (window.WebSocket) {
-        socket = new WebSocket("ws://localhost:8080/chat");
-        socket.onmessage = function(event) {
-            alert("Received data from websocket: " + event.data);
-        }
-        socket.onopen = function(event) {
-            alert("Web Socket opened!");
-        };
-        socket.onclose = function(event) {
-            alert("Web Socket closed.");
-        };
-    } else {
-        alert("Your browser does not support Websockets. (Use Chrome)");
-    }
+<head>
+<title>Test Consoler</title>
+<!-- Page metadata -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="description" content="Test Consoler for access multiple browsers on differenct machines">
+<meta name="author" content="Gihan Karunarathne">
+<meta name="email" content="gckarunarathne@gmail.com">
 
-    function send(message) {
-        if (!window.WebSocket) {
-            return;
-        }
-        if (socket.readyState == WebSocket.OPEN) {
-            socket.send(message);
-        } else {
-            alert("The socket is not open.");
-        }
+<!-- Add java script libraries -->
+<script type="text/javascript" src="jquery-2.0.2.min.js"></script>
+<script type="text/javascript" src="jquery.json-2.4.min.js"></script>
+<script type="text/javascript" src="underscore.js"></script>
+
+<script type="text/javascript" src="client-console.js"></script>
+</head>
+<body>
+<h4>Client Console</h4>
+<script>
+    var clientConsole;
+
+    window.onload = function(){
+        clientConsole = new client_console();
+        clientConsole.init('localhost:8080/console')
+        clientConsole.connect();
     }
 </script>
-<form onsubmit="return false;">
-    <input type="text" name="message" value="Hello, World!"/>
-    <input type="button" value="Send Web Socket Data" onclick="send(this.form.message.value)"/>
-</form>
 </body>
 </html>

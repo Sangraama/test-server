@@ -20,26 +20,31 @@ public class MainWebSocket extends Verticle {
     public void start() {
         HttpServer server = vertx.createHttpServer();
 
+        ServerWebSocket admin , console;
+
         server.websocketHandler(new Handler<ServerWebSocket>() {
             public void handle(final ServerWebSocket ws) {
-                if (ws.path().equals("/chat")) {
+                if (ws.path().equals("/console")) {
+
                     ws.dataHandler(new Handler<Buffer>() {
                         public void handle(Buffer data) {
                             ws.writeTextFrame(data.toString()); // Echo it back
                         }
                     });
+
+                } else if (ws.path().equals("/admin-console")) {
+
+                    ws.dataHandler(new Handler<Buffer>() {
+                        public void handle(Buffer data) {
+                            ws.writeTextFrame(data.toString()); // Echo it back
+                        }
+                    });
+                    
                 } else {
                     ws.reject();
                 }
             }
-        });//listen(8080,"localhost");
-        /*requestHandler(new Handler<HttpServerRequest>() {
-            public void handle(HttpServerRequest req) {
-                if (req.path().equals("/")) req.response().sendFile("index.html"); // Serve the html
-                //String file = req.path().equals("/") ? "index.html" : req.path();
-                //req.response().sendFile("webroot/" + file);
-            }
-        });*/
+        });
 
         RouteMatcher routeMatcher = new RouteMatcher();
 
@@ -50,7 +55,50 @@ public class MainWebSocket extends Verticle {
         });
         routeMatcher.get("/main-console.js", new Handler<HttpServerRequest>() {
             public void handle(HttpServerRequest req) {
-                req.response().sendFile("main-console.js");
+                req.response().sendFile("js/main-console.js");
+            }
+        });
+        routeMatcher.get("/admin", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("admin.html");
+            }
+        });
+        routeMatcher.get("/client-console.js", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("js/client-console.js");
+            }
+        });
+
+        routeMatcher.get("/jquery-2.0.2.min.js", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("js/lib/jquery-2.0.2.min.js");
+            }
+        });
+        routeMatcher.get("/bootstrap.min.js", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("js/lib/bootstrap.min.js");
+            }
+        });
+
+        routeMatcher.get("/jquery.json-2.4.min.js", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("js/lib/jquery.json-2.4.min.js");
+            }
+        });
+        routeMatcher.get("/underscore.js", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("js/lib/underscore.js");
+            }
+        });
+
+        routeMatcher.get("/bootstrap.min.css", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("css/bootstrap.min.css");
+            }
+        });
+        routeMatcher.get("/bootstrap-responsive.min.css", new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest req) {
+                req.response().sendFile("css/bootstrap-responsive.min.css");
             }
         });
 

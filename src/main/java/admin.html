@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test Consoler</title>
+<!-- Page metadata -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="description" content="Test Consoler for access multiple browsers on differenct machines">
+<meta name="author" content="Gihan Karunarathne">
+<meta name="email" content="gckarunarathne@gmail.com">
+
+<!-- Add style sheets and responsive design -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="bootstrap-responsive.min.css" rel="stylesheet">
+
+<!-- Add java script libraries -->
+<script type="text/javascript" src="jquery-2.0.2.min.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery.json-2.4.min.js"></script>
+<script type="text/javascript" src="underscore.js"></script>
+
+<script type="text/javascript" src="main-console.js"></script>
+<script type="text/javascript">
+  var adminConsole;
+
+  $(document).ready(function(){
+    window.onload = function(){
+      adminConsole = new main_console();
+      adminConsole.init('localhost:8080/admin-console');
+      adminConsole.connect();
+
+      $('#terminal').typeahead({
+        name : 'Command options',
+        source : adminConsole.getCmds()
+      });
+    }
+  });
+</script>
+</head>
+
+<body>
+<div class="container-fluid well">
+<h4>Admin Panel</h4>
+<input id='terminal' type="text" placeholder="Command [options]">
+</div>
+</body>
+</html>
